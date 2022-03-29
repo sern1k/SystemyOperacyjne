@@ -1,0 +1,2 @@
+Funkcja fork sprawia, ze dla kazdego jednego procesu tworza sie dwa kolejne, to znaczy, ze fork wywoluje sie wykladniczo o podstawie 2. 
+Przy n-krotnym wywolaniu funkcji fork procesow powstanie 2 do potegi n.

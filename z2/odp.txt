@@ -1,0 +1,5 @@
+/* Pola Madej, Krakow 22.03.2022
+Odpowiedz do zadanego pytania */
+
+W przypadku uzycia execlp w kodzie, w przeciwienstwie do poprzedniego programu, jeden proces potomny uruchamia wypisywanie.c, a pozniej jest to zamykane (po jednokrotnym wykonaniu).
+To znaczy, ze dla kazdego wywolan funkcji fork() powstanie tylko jeden proces potomny. Stad przy n-krotnym wywolaniu funkcji powstanie n procesow.

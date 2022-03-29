@@ -1,0 +1,22 @@
+Systemy Operacyjne, zadanie 1 , Krakow, 15.03.2022, Pola Madej, Informatyka Stosowana 1 rok, numer albumu 1181441
+
+
+
+Zawartosc katalogu:
+	1. pliki .c (z1a.c, z1b.c, z1c.c, z1d.c, z1e.c) - pliki z kodem zrodlowym w jezyku C
+	2. plik odp.txt - zawiera odpowiedz na zadane pytanie w zadaniu 1e
+	3. plik drzewogenealogiczne.txt - zawiera drzewo genealogiczne z zadania 1d
+	4. plik README - plik, ktory zawiera podstawowe informacje o programie oraz zawartosci katalogu
+	5. plik Makefile
+	
+	
+	
+Program sluzy do zapoznania sie z tematyka procesow, procesow macierzystych i potomnych. Pokazuje ID procesow, korzysta z funkcji fork(), prezentuje nam roznice miedzy funkcja wait a sleep.
+
+
+
+Komendy przydatne do korzystania z programow:
+	- make all - kompiluje wszystkie programy
+	- make <nazwa-zadania> - uruchamia program (np. make z1a, make z1b, make z1c itd.)
+	- make clean - czysci katalog
+	- make tar - kompresuje katalog

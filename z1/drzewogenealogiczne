@@ -1,0 +1,66 @@
+ID procesu macierzystego:
+UID = 1000
+GID = 1000
+PID = 9069	
+PPID = 7297	
+PGID = 9069	
+
+ID procesu potomnego:
+UID = 1000
+GID = 1000
+PID = 9070
+PPID = 9069
+PGID = 9069	
+
+ID procesu potomnego:
+UID = 1000
+GID = 1000
+PID = 9080
+PPID = 9069
+PGID = 9069	
+
+ID procesu potomnego:
+UID = 1000
+GID = 1000
+PID = 9081
+PPID = 9070
+PGID = 9069	
+
+ID procesu potomnego:
+UID = 1000
+GID = 1000
+PID = 9086
+PPID = 9069
+PGID = 9069	
+
+ID procesu potomnego:
+UID = 1000
+GID = 1000
+PID = 9088
+PPID = 9080
+PGID = 9069	
+
+ID procesu potomnego:
+UID = 1000
+GID = 1000
+PID = 9087
+PPID = 9070
+PGID = 9069	
+
+ID procesu potomnego:
+UID = 1000
+GID = 1000
+PID = 9089
+PPID = 9081
+PGID = 9069
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+									(9069,7297,9069)
+				/						|						\
+				|						|						|		
+			(9070,9069,9069)	(9080,9069,9069)				(9086,9069,9069)
+			|		|					|
+(9081,9070,9069) (9087,9070,9069)	(9088,9080,9069)
+		|	
+	(9089,9081,9069)
+
