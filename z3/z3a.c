@@ -1,49 +1,47 @@
-/* Pola Madej, Krakow 29.03.2022
- * Program do obslugi sygnalow z mozliwosciami
- * 1.operacji domyslnej
- * 2. ignorowania
- * 3. przechwycenia i wlasnej obslugi sygnalu */
+/* Pola Madej 4.04.2022 Kraków
+Ustawia obsługę sygnału na 3 sposoby zgodnie z opcją podaną jako argument wywołania programu, a następnie czeka na sygnał */
 
-//#define _POSIX_C_SOURCE 200112L
-//#define _XOPEN_SOURCE 500
+#define _XOPEN_SOURCE 500
 #include <stdio.h>
-#include <unistd.h> //do obslugi np getpid()
-#include <stdlib.h> //do obslugi np exit(EXIT_FAILURE)
-#include <string.h> //do obslugi strcmp()
-#include <signal.h> //do obslugi sygnalow
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <string.h>
+#include <signal.h>
 
-void obsluga(int sygnal) {
+void ObslugaCustom(int sig) {
     extern const char * const sys_siglist[];
     printf("\nWlasna obsluga sygnalu:\n");
-    printf("Sygnal %s, %d\n", sys_siglist[sygnal], sygnal);
+    printf("Sygnal %s, %d\n", sys_siglist[sig], sig);
 }
 
-int main(int argc, char *argv[]) {
-    if (argc != 3) {                //obsluga bledu w przypadku zlej liczby argumentow
-        printf("Blad - zla ilosc argumentow\n");
+int main(int argc, char* argv[]) {
+    if (argc != 3) {
+        printf("Podales niewlasciwa liczbe argumentow.\nPrawidlowe wywolanie funkcji to: make runA SYGNAL=? OPCJA=?\ngdzie SYGNAL to liczba a OPCJA to default, ignore lub custom\n");
         exit(EXIT_FAILURE);
     }
-
-    printf("PID procesu: %d/n", getpid());
-
-    if (strcmp(argv[2], "ignore") == 0) {    //strcmp - porownuje dwa lancuchy znakow
-        if (signal(atoi(argv[1]), SIG_IGN) == SIG_ERR) { //atoi - konwertuje wartosc zapisana w lancuchu znakow do int
-            perror("Problem funkcji z SIGINT");
+    printf("PID procesu: %d\n", getpid());
+    
+    if (strcmp(argv[2], "default") == 0) {
+        if (signal(atoi(argv[1]), SIG_DFL) == SIG_ERR) {    //atoi - konwertuje wartosc zapisana w lancuchu znakow do postaci int
+            printf("Funkcja signal napotkala problem\n");
             exit(EXIT_FAILURE);
         }
-    } else if (strcmp(argv[2], "default") == 0) {
-        if (signal(atoi(argv[1]), SIG_DFL) == SIG_ERR) {
-            perror("Problem funkcji z SIGINT");
+    } else if (strcmp(argv[2], "ignore") == 0) {
+        if (signal(atoi(argv[1]), SIG_IGN) == SIG_ERR) {
+            printf("Funkcja signal napotkala problem\n");
             exit(EXIT_FAILURE);
         }
     } else if (strcmp(argv[2], "custom") == 0) {
-        if (signal(atoi(argv[1]), obsluga) == SIG_ERR) {
-            perror("Problem funkcji z SIGINT");
+        if (signal(atoi(argv[1]), ObslugaCustom) == SIG_ERR) {
+            printf("Funkcja signal napotkala problem\n");
             exit(EXIT_FAILURE);
         }
     } else {
-        printf("Bledna opcja %s\n", argv[2]);
+        printf("Zla opcja.");
+        exit(EXIT_FAILURE);
     }
-
     pause();
+
+    return 0;
 }

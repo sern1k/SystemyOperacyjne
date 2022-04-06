@@ -1,56 +1,50 @@
-/* Pola Madej, Krakow 29.03.2022
- * W procesie macierzystym utworzyc proces potomny i sprawic, aby stal sie liderem nowej grupy,
- * nastepnie uruchomic w nim kilka procesow potomnych wykonujacych program do obslugi sygnalow */
+/* Pola Madej 4.04.2022 Kraków
+Pierwszy tworzy jeden proces potomny i uruchamia w nim program, 
+który ustawia ignorowanie sygnału, staje się liderem swojej grupy procesów, 
+a następnie tworzy kilka procesów potomnych, które uruchamiają program z podpunktu (a) */
 
-//#define _POSIX_C_SOURCE 200112L
-//#define _XOPEN_SOURCE 500
+#define _XOPEN_SOURCE 500
+#define _POSIX_C_SOURCE 200112L
 #include <stdio.h>
-#include <unistd.h> //do obslugi np getpid()
-#include <stdlib.h> //do obslugi np exit(EXIT_FAILURE)
-#include <signal.h> //do obslugi sygnalow
+#include <unistd.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <string.h>
 
 int main(int argc, char *argv[]) {
-    if (argc != 5) {                //obsluga bledu w przypadku zlej liczby argumentow
-        printf("Blad - zla ilosc argumentow\n");
+    int childPid = 0;
+    int childGroup = 0;
+    if (argc != 5) {
+        printf("Podales niewlasciwa liczbe argumentow.\n");
         exit(EXIT_FAILURE);
     }
-
-    printf("PID procesu: %d/n", getpid());
-
-    int childrenPID = 0;
-    int childrenPGID = 0;
-
-    switch (childrenPID = fork()) {
-        case -1:
+    
+    switch (childPid = fork()) {
+       case -1:
             perror("fork error");
             exit(EXIT_FAILURE);
-
-        case 0:
-            if (execl(argv[3], argv[3], argv[1], argv[4], NULL) == -1) {
+            break;
+       case  0:
+            if (execvp(argv[3], argv) == -1) {  //uruchamia 3c2.out
                 perror("execl error");
                 exit(EXIT_FAILURE);
             }
             break;
-
-        default:
+       default:
             sleep(1);
-            childrenPGID = getpgid(childrenPID);
-
-            if (kill((-1)*childrenPGID, 0) == -1) {
-                perror("Dziecko tego procesu nie istnieje\n");
+            childGroup = getpgid(childPid);
+            if (kill(-1 * childGroup, 0) == -1) {   //czy proces istnieje
+                perror("Proces nie istnieje");
                 exit(EXIT_FAILURE);
             }
-            if (kill((-1)*childrenPGID, atoi(argv[1]))) {
-                perror("kill error");
+            if (kill(-1 * childGroup, atoi(argv[1])) == -1) {
                 exit(EXIT_FAILURE);
             }
     }
-
     sleep(1);
-
     if (strcmp(argv[2], "ignore") == 0) {
-        printf("Pozostaly procesy zombie\n");
-        printf("Wysylam SIGKILL do procesow zombie\n");
-        kill((-1)*childrenPGID, SIGKILL);
+        printf("Zamykam proces, ktory nie zamknal sie przez to, ze mial ignorowac sygnal\n");
+        kill(-1 * childGroup, SIGKILL);
     }
+    return 0;
 }

@@ -1,0 +1,24 @@
+Systemy Operacyjne, zadanie 3 , Krakow, 5.04.2022, Pola Madej, Informatyka Stosowana 1 rok, numer albumu 1181441
+
+
+
+Zawartosc katalogu:
+	1. pliki .c (z3a.c, z3b.c, z3c.c, z3c2.c) - pliki z kodem zrodlowym w jezyku C
+	2. plik README - plik, ktory zawiera podstawowe informacje o programie oraz zawartosci katalogu
+	3. plik Makefile
+
+
+
+Programy sluza do:
+    a) stawiania obsługi sygnału na 3 sposoby.
+    b) w procesie potomnym uruchamia podpunkt a, potem z procesu macierzystego wysyla do niego sygnal
+    c) tworzy jeden proces potomny i uruchamia w nim program, ktory ustawia ignorowanie sygnalu, staje sie liderem, a potem tworzy kilka procesow potomnych, ktore uruchamiaja podpunkt a
+
+
+
+Komendy przydatne do korzystania z programow:
+    -make runA SYGNAL=? OPCJA=?         - uruchomienie z3a
+    -make runB SYGNAL=? OPCJA=? PROG3A=./z3a.out        - uruchomienie z3b
+    -make runC SYGNAL=? OPCJA=? PROG3C2=./z3c2.out PROG3A=./z3a.out      - uruchomienie z3c
+    -make clean         - czyszczenie katalogu
+    -make tar       - archiwizacja i kompresja

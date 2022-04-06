@@ -1,66 +1,30 @@
-DIR = `basename $(CURDIR)`
+CC = gcc
+CFLAGS = -Wall -std=c99 -pedantic
 
-NAME1 = z3a
-NAME2 = z3b
-NAME3 = z3c
-NAME4 = z3c2
+z3a.out: z3a.c
+	$(CC) $(CFLAGS) z3a.c -o z3a.out
+z3b.out: z3b.c
+	$(CC) $(CFLAGS) z3b.c -o z3b.out
+z3c.out: z3c.c
+	$(CC) $(CFLAGS) z3c.c -o z3c.out
+z3c2.out: z3c2.c
+	$(CC) $(CFLAGS) z3c2.c -o z3c2.out
 
-EXEC1  = $(NAME1).x
-EXEC2  = $(NAME2).x
-EXEC3  = $(NAME3).x
-EXEC4  = $(NAME4).x
+.PHONY: runA runB runC clean tar
 
-OBJS1  = $(NAME1).o
-OBJS2  = $(NAME2).o
-OBJS3  = $(NAME3).o
-OBJS4  = $(NAME4).o
-
-CFLAGS = -Wall -std=c99 -pedantic -O
-LFLAGS = -Wall -std=c99 -pedantic -O
-
-CO = gcc
-LD = $(CO)
-
-AR = ar
-
-ARFLAGS = rsv
-
-%.o: %.c
-	$(CO) $(CFLAGS) -c $<
-
-.PHONY: all
-all: $(EXEC1) $(EXEC2) $(EXEC3) $(EXEC4)
-
-$(EXEC1): $(OBJS1) $(LIBS1) 
-	$(LD) -o $@ $(LFLAGS) $^
-
-$(EXEC2): $(OBJS2) $(LIBS2) 
-	$(LD) -o $@ $(LFLAGS) $^
-
-$(EXEC3): $(OBJS3) $(LIBS3) 
-	$(LD) -o $@ $(LFLAGS) $^
-
-$(EXEC4): $(OBJS4) $(LIBS4) 
-	$(LD) -o $@ $(LFLAGS) $^
-
-.PHONY: runA runB runC
-
-runA: $(EXEC1)
+runA: z3a.out
 	clear
-	./$(EXEC1) $(SYGNAL) $(OPCJA)
-
-runB: $(EXEC2) $(EXEC1)
+	./z3a.out $(SYGNAL) $(OPCJA)
+runB: z3b.out $(PROG3A)
 	clear
-	./$(EXEC2) $(SYGNAL) $(OPCJA) $(EXEC1)
-
-runC: $(EXEC3) $(EXEC1) $(EXEC4)
+	./z3b.out $(SYGNAL) $(OPCJA) $(PROG3A)
+runC: z3c.out $(PROG3A) $(PROG3C2)
 	clear
-	./$(EXEC3) $(SYGNAL) $(OPCJA) $(EXEC4) $(EXEC1)
-
-.PHONY: clean tar
+	./z3c.out $(SYGNAL) $(OPCJA) $(PROG3C2) $(PROG3A)
 
 clean:
-	rm -f *.o  *~ *.a *.so *.x core core* a.out; rm -rf ${LIB_DIR}
-
+	clear
+	rm -f *.out
 tar: clean
-	(cd ../; tar -cvzf $(DIR).tar.gz  $(DIR) )
+	clear
+	cd ..; tar cvzf z3.tar.gz z3
